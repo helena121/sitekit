@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+    <changeSet author="tlaukkan" id="f3069c10-a6cd-11e3-a5e2-0800200c9a66">
+        <createTable tableName="content">
+            <column name="contentid" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="afterpage" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="created" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="markup" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="markuptype" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="page" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="parentpage" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="title" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="owner_companyid" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey columnNames="contentid" constraintName="content_pkey" tableName="content"/>
+        <addForeignKeyConstraint baseColumnNames="owner_companyid" baseTableName="content" constraintName="fk_content_owner_companyid" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="companyid" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="tlaukkan" id="5c6f0410-a6f3-11e3-a5e2-0800200c9a66">
+        <modifyDataType columnName="markup" newDataType="text" tableName="content"/>
+    </changeSet>
+    <changeSet author="tlaukkan" id="6aa48730-a770-11e3-a5e2-0800200c9a66">
+        <insert tableName="group_">
+            <column name="groupid" value="73458b00-a770-11e3-a5e2-0800200c9a66"/>
+            <column name="owner_companyid" value="3248528E-4D90-41F7-968F-AF255AD16901"/>
+            <column name="name" value="anonymous"/>
+            <column name="description" value="Anonymous"/>
+            <column name="created" value="2000-01-01 00:00:00"/>
+            <column name="modified" value="2000-01-01 00:00:00"/>
+        </insert>
+    </changeSet>
+    <changeSet author="tlaukkan" id="00630460-d8bb-11e3-9c1a-0800200c9a66">
+        <createTable catalogName="site" tableName="auditlogentry">
+            <column name="auditlogentryid" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="event" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="componentaddress" type="VARCHAR(60)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="componenttype" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="useraddress" type="VARCHAR(60)"/>
+            <column name="userid" type="VARCHAR(36)"/>
+            <column name="username" type="VARCHAR(40)"/>
+
+            <column name="datatype" type="VARCHAR(20)"/>
+            <column name="dataid" type="VARCHAR(36)"/>
+            <column name="dataoldversionid" type="VARCHAR(36)"/>
+            <column name="datanewversionid" type="VARCHAR(36)"/>
+            <column name="datalabel" type="VARCHAR(40)"/>
+
+            <column name="created" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey catalogName="site" columnNames="auditlogentryid" constraintName="auditlogentry_pkey" tableName="auditlogentry"/>
+        <createIndex catalogName="site" indexName="unq_auditlogentry_0" tableName="auditlogentry" unique="false">
+            <column name="created"/>
+            <column name="event"/>
+        </createIndex>
+        <createIndex catalogName="site" indexName="unq_auditlogentry_1" tableName="auditlogentry" unique="false">
+            <column name="created"/>
+            <column name="username"/>
+        </createIndex>
+        <createIndex catalogName="site" indexName="unq_auditlogentry_2" tableName="auditlogentry" unique="false">
+            <column name="created"/>
+            <column name="datalabel"/>
+        </createIndex>
+
+    </changeSet>
+    <changeSet author="tlaukkan" id="5b3b5450-dcd0-11e3-9c1a-0800200c9a66">
+        <dropIndex indexName="unq_privilege_0" tableName="privilege" />
+    </changeSet>
+
+    <changeSet author="tlaukkan" id="08e398c0-e34c-11e3-8b68-0800200c9a66">
+        <update tableName="company">
+            <column name="maxfailedlogincount" value="5"/>
+            <where>companycode = '0000000-0'</where>
+        </update>
+    </changeSet>
+</databaseChangeLog>
+
